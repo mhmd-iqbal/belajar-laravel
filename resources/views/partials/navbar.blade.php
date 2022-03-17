@@ -30,9 +30,33 @@
               <a class="nav-link {{ $title === 'Authors' || $title === 'User Posts' ? 'active' : '' }}"
                 href="/authors">Author</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link {{ $title === 'Login Page' ? 'active' : '' }}" href="/auth/login">Login</a>
-            </li>
+            @auth
+              <li class="nav-item">
+                <div class="btn-group">
+                  <a class="nav-link dropdown-toggle" type="button" id="defaultDropdown" data-bs-toggle="dropdown"
+                    data-bs-auto-close="true" aria-expanded="false">
+                    Hi, {{ auth()->user()->name }}
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="defaultDropdown">
+                    <li><a class="dropdown-item {{ $title === 'Dashboard' ? 'active' : '' }}"
+                        href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="dropdown-divider"></li>
+                    <li>
+                      <form action="/logout" method="post">
+                        @csrf
+                        <button type="submit" class="dropdown-item" href="/logout">Logout</button>
+                      </form>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            @else
+              <li class="nav-item">
+                <a class="nav-link {{ $title === 'Login Page' ? 'active' : '' }}" href="/auth/login">Login</a>
+              </li>
+            @endauth
+
           </ul>
         </div>
       </div>

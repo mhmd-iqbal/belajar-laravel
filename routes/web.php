@@ -5,6 +5,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +67,11 @@ Route::get('/authors/{user:username}/posts', function (User $user) {
     ]);
 });
 
-Route::get('/auth/login', [AuthController::class, 'login_page']);
+Route::get('/auth/login', [AuthController::class, 'login_page'])->name('login')->middleware('guest');
+Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout']);
+
 Route::get('/auth/register', [AuthController::class, 'register_page']);
 Route::post('/auth/register', [AuthController::class, 'register']);
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');

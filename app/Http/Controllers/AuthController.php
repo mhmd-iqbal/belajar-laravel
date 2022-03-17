@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -25,21 +26,16 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validatedData = $request->validate([
-            'email' => 'required|unique:users|email:dns',
+            'email' => 'required|email:dns',
             'password' => 'required|min:6|max:20',
         ]);
 
-        $validatedData['password'] = Hash::make($validatedData['password']);
-
-        $query = User::create($validatedData);
-
-        if ($query) {
-            $request->session()->flash('message', 'Registrasi berhasil!');
-            return redirect('/auth/login');
-        } else {
-            $request->session()->flash('message', 'Registrasi gagal dilakukan!');
-            return redirect('/auth/login');
+        if (Auth::attempt($validatedData)) {
+            $request->session()->regenerate();
+            return redirect()->intended('/dashboard');
         }
+
+        return back()->with('error', 'Login failed!');
     }
 
     public function register(Request $request)
@@ -60,5 +56,13 @@ class AuthController extends Controller
         } else {
             return redirect('/auth/login')->with('message', 'Registrasi gagal dilakukan!');
         }
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/auth/login')->with('message', 'Anda telah melakukan logout!');
     }
 }
