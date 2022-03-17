@@ -30,6 +30,9 @@
               <a class="nav-link {{ $title === 'Authors' || $title === 'User Posts' ? 'active' : '' }}"
                 href="/authors">Author</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link {{ $title === 'Login Page' ? 'active' : '' }}" href="/auth/login">Login</a>
+            </li>
           </ul>
         </div>
       </div>

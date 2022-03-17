@@ -3,6 +3,7 @@
 use App\Models\User;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 
 /*
@@ -64,3 +65,7 @@ Route::get('/authors/{user:username}/posts', function (User $user) {
         'posts' => $user->posts->load('category', 'user'),
     ]);
 });
+
+Route::get('/auth/login', [AuthController::class, 'login_page']);
+Route::get('/auth/register', [AuthController::class, 'register_page']);
+Route::post('/auth/register', [AuthController::class, 'register']);
