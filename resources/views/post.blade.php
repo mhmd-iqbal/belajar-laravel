@@ -13,8 +13,11 @@
       <article class="my-4">
         {!! $post->body !!}
       </article>
-
-      <a href="/posts">Back to Posts</a>
+      @if (auth()->check())
+        <a href="/dashboard/posts">Back to Dashboard Posts</a>
+      @else
+        <a href="/posts">Back to Posts</a>
+      @endif
     </div>
   </div>
 @endsection

@@ -15,20 +15,19 @@
         <div class="offcanvas-body bg-primary">
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
             <li class="nav-item">
-              <a class="nav-link {{ $title === 'Home' ? 'active' : '' }}" href="/">Home</a>
+              <a class="nav-link {{ Request::is('/') ? 'active' : '' }}" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {{ $title === 'About' ? 'active' : '' }}" href="/about">About</a>
+              <a class="nav-link {{ Request::is('about') ? 'active' : '' }}" href="/about">About</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {{ $title === 'Blog' ? 'active' : '' }}" href="/posts">Blog</a>
+              <a class="nav-link {{ Request::is('posts') ? 'active' : '' }}" href="/posts">Blog</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {{ $title === 'Category' ? 'active' : '' }}" href="/categories">Category</a>
+              <a class="nav-link {{ Request::is('categories') ? 'active' : '' }}" href="/categories">Category</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {{ $title === 'Authors' || $title === 'User Posts' ? 'active' : '' }}"
-                href="/authors">Author</a>
+              <a class="nav-link {{ Request::is('authors') ? 'active' : '' }}" href="/authors">Author</a>
             </li>
             @auth
               <li class="nav-item">
@@ -38,8 +37,11 @@
                     Hi, {{ auth()->user()->name }}
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="defaultDropdown">
-                    <li><a class="dropdown-item {{ $title === 'Dashboard' ? 'active' : '' }}"
+                    <li><a class="dropdown-item {{ Request::is('dashboard') ? 'active' : '' }}"
                         href="/dashboard">Dashboard</a>
+                    </li>
+                    <li><a class="dropdown-item {{ Request::is('dashboard/posts*') ? 'active' : '' }}"
+                        href="/dashboard/posts">Posts</a>
                     </li>
                     <li class="dropdown-divider"></li>
                     <li>
