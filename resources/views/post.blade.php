@@ -1,8 +1,10 @@
-@extends('layouts.main')
+p@extends('layouts.main')
 @section('content')
   <article>
     <h3>{{ $post->title }}</h3>
-    <p>Posted by Muhammad Iqbal in <a href="/category/{{ $post->category->slug }}">{{ $post->category->name }}</a></p>
+    <p>Posted by <a href="/authors/{{ $post->user->username }}/posts"
+        class="text-decoration-none">{{ $post->user->name }}</a> in <a href="/category/{{ $post->category->slug }}"
+        class="text-decoration-none">{{ $post->category->name }}</a></p>
     {!! $post->body !!}
   </article>
 

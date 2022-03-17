@@ -1,9 +1,10 @@
 <?php
 
 use App\Models\Post;
+use App\Models\User;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
-use App\Models\Category;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,31 +52,9 @@ Route::get('/category/{category:slug}', function (Category $category) {
     ]);
 });
 
-// Category::create([
-//     'name' => 'Personal',
-//     'slug' => 'personal',
-// ]);
-
-// Post::create([
-//     'title' => 'Judul Pertama',
-//     'category_id' => '1',
-//     'slug' => 'judul-pertama',
-//     'excerpt' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae',
-//     'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae, alias nesciunt aspernatur nihil laboriosam doloribus praesentium! Unde consequatur voluptates consectetur nesciunt quos sed omnis atque, amet voluptatibus dicta eius culpa accusamus suscipit accusantium labore? Quas, commodi. Dolorem rerum consectetur dolor! Veritatis unde nam, saepe labore pariatur ullam facere nulla dolores?',
-// ]);
-
-// Post::create([
-//     'title' => 'Judul Kedua',
-//     'category_id' => '2',
-//     'slug' => 'judul-kedua',
-//     'excerpt' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae',
-//     'body' => '<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae, alias nesciunt aspernatur nihil laboriosam doloribus praesentium! Unde consequatur voluptates consectetur nesciunt quos sed omnis atque, amet voluptatibus dicta eius culpa accusamus suscipit accusantium labore? Quas, commodi. Dolorem rerum consectetur dolor! Veritatis unde nam, saepe labore pariatur ullam facere nulla dolores?</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae, alias nesciunt aspernatur nihil laboriosam doloribus praesentium! Unde consequatur voluptates consectetur nesciunt quos sed omnis atque, amet voluptatibus dicta eius culpa accusamus suscipit accusantium labore? Quas, commodi.</p>',
-// ]);
-
-// Post::create([
-//     'title' => 'Judul Ketiga',
-//     'category_id' => 3,
-//     'slug' => 'judul-ketiga',
-//     'excerpt' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae',
-//     'body' => '<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae, alias nesciunt aspernatur nihil laboriosam doloribus praesentium! Unde consequatur voluptates consectetur nesciunt quos sed omnis atque, amet voluptatibus dicta eius culpa accusamus suscipit accusantium labore? Quas, commodi. Dolorem rerum consectetur dolor! Veritatis unde nam, saepe labore pariatur ullam facere nulla dolores?</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae, alias nesciunt aspernatur nihil laboriosam doloribus praesentium! Unde consequatur voluptates consectetur nesciunt quos sed omnis atque, amet voluptatibus dicta eius culpa accusamus suscipit accusantium labore? Quas, commodi.</p><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae, alias nesciunt aspernatur nihil laboriosam doloribus praesentium! Unde consequatur voluptates consectetur nesciunt quos sed omnis atque, amet voluptatibus dicta eius culpa accusamus suscipit accusantium labore? Quas, commodi.</p>',
-// ]);
+Route::get('/authors/{user:username}/posts', function (User $user) {
+    return view('posts', [
+        'title' => 'User Posts',
+        'posts' => $user->posts,
+    ]);
+});

@@ -17,7 +17,7 @@
 
   @include('partials.navbar')
 
-  <div class="min-vh-100 container" style="padding-top: 70px;">
+  <div class="min-vh-100 container pb-4" style="padding-top: 70px;">
     @yield('content')
   </div>
 
