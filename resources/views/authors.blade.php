@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('content')
-  <h1>Halaman Author</h1>
+  <h3>Halaman Author</h3>
   @foreach ($authors as $author)
     <nav class="nav">
       <ul class="navbar-nav">
