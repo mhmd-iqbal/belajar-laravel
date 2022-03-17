@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('content')
-  <h1>Kategori : {{ $category }}</h1>
+  <h1>Kategori : {{ $category_name }}</h1>
   @foreach ($posts as $post)
     <article class="border-bottom my-4">
       <h3><a href="/post/{{ $post->slug }}" class="text-decoration-none">{{ $post->title }}</a></h3>
