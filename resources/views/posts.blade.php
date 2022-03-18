@@ -1,19 +1,34 @@
 @extends('layouts.main')
 @section('content')
-  @if ($title === 'User Posts')
-    <h3>Post by : {{ $posts[0]->user->name }}</h3>
-  @else
-    <h3>Halaman Blog Posts</h3>
-  @endif
+  <h3>{{ $title }}</h3>
+
+
+  <div class="row justify-content-center my-3">
+    <div class="col-md-6">
+      <form action="/posts">
+        @if (request('category'))
+          <input type="hidden" name="category" value="{{ request('category') }}">
+        @endif
+        @if (request('author'))
+          <input type="hidden" name="author" value="{{ request('author') }}">
+        @endif
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Search.." name="search" value="{{ request('search') }}">
+          <button class="btn btn-dark" type="submit">Search</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   @if ($posts->count() > 0)
     <div class="card my-3 text-center shadow-sm">
       <img src="https://source.unsplash.com/1200x400?{{ $posts[0]->category->name }}" class="card-img-top"
         alt="{{ $posts[0]->category->name }}">
       <div class="card-body">
         <h3 class="card-title">{{ $posts[0]->title }}</h3>
-        <p>Posted by <a href="/authors/{{ $posts[0]->user->username }}/posts"
+        <p>Posted by <a href="/posts?author={{ $posts[0]->user->username }}"
             class="text-decoration-none">{{ $posts[0]->user->name }}</a>
-          in <a href="/category/{{ $posts[0]->category->slug }}"
+          in <a href="/posts?category={{ $posts[0]->category->slug }}"
             class="text-decoration-none">{{ $posts[0]->category->name }}</a> - <small
             class="text-muted">{{ $posts[0]->created_at->diffForHumans() }}</small>
         </p>
@@ -30,7 +45,7 @@
       <div class="col">
         <div class="card">
           <div class="position-absolute bg-dark px-3 py-2">
-            <a href="/category/{{ $post->category->slug }}"
+            <a href="/posts?category={{ $post->category->slug }}"
               class="text-decoration-none text-white">{{ $post->category->name }}</a>
           </div>
           <img src="https://source.unsplash.com/1000x600?{{ $post->category->name }}" class="card-img-top"
@@ -38,7 +53,7 @@
           <div class="card-body">
             <h5 class="card-title"><a href="/post/{{ $post->slug }}"
                 class="text-decoration-none">{{ $post->title }}</a></h5>
-            <p><small>Posted by <a href="/authors/{{ $post->user->username }}/posts"
+            <p><small>Posted by <a href="/posts?author={{ $post->user->username }}"
                   class="text-decoration-none">{{ $post->user->name }}</a> -
                 {{ $post->created_at->diffForHumans() }}</small>
             </p>
