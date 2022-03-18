@@ -1,5 +1,11 @@
 @extends('layouts.main')
 @section('content')
+  @if (session()->has('message'))
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+      {{ session('message') }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  @endif
   <a href="/dashboard/posts/create" class="btn btn-dark">New Post</a>
   <div class="table-responsive mt-3">
     <table class="table-hover table-sm table">

@@ -64,4 +64,10 @@
       </div>
     @endforeach
   </div>
+
+  <div class="row justify-content-center mt-4">
+    <div class="col-auto">
+      {{ $posts->links() }}
+    </div>
+  </div>
 @endsection

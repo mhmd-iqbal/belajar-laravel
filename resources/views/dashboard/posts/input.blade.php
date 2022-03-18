@@ -1,33 +1,63 @@
 @extends('layouts.main')
 @section('content')
+  <style>
+    trix-toolbar [data-trix-button-group="file-tools"] {
+      display: none;
+    }
+
+  </style>
   <h3 class="text-center">{{ $title }}</h3>
-  <form action="/dashboard/posts/store" method="post">
+  <form action="/dashboard/posts" method="post">
+    @csrf
     <div class="row justify-content-center mt-3 pb-4">
-      @csrf
-      <div class="col-md-6">
+      <div class="col-md-8">
         <div class="mb-3">
           <label for="title" class="form-label">Title</label>
-          <input type="text" class="form-control" name="title" id="title">
+          <input type="text" class="form-control @error('title') is-invalid @enderror" name="title" id="title"
+            value={{ old('title') }}>
+          @error('title')
+            <div class="invalid-feedback">
+              {{ $message }}
+            </div>
+          @enderror
         </div>
         <div class="mb-3">
           <label for="slug" class="form-label">Slug</label>
-          <input type="text" class="form-control" name="slug" id="slug">
+          <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="slug" readonly
+            tabindex="-1" value={{ old('slug') }}>
+          @error('slug')
+            <div class="invalid-feedback">
+              {{ $message }}
+            </div>
+          @enderror
         </div>
         <div class="mb-3">
-          <label for="category" class="form-label">Category</label>
-          <select name="category" id="category" class="form-select">
+          <label for="category_id" class="form-label">Category</label>
+          <select name="category_id" id="category_id" class="form-select @error('category_id') is-invalid @enderror">
+            <option value="" disabled selected>Choose Options</option>
             @foreach ($categories as $category)
-              <option value="{{ $category->id }}">{{ $category->name }}</option>
+              @if (old('category_id') == $category->id)
+                <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
+              @else
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+              @endif
             @endforeach
           </select>
-        </div>
-        <div class="mb-3">
-          <label for="excerpt" class="form-label">Excerpt</label>
-          <textarea class="form-control" name="excerpt" id="excerpt" rows="3"></textarea>
+          @error('category_id')
+            <div class="invalid-feedback">
+              {{ $message }}
+            </div>
+          @enderror
         </div>
         <div class="mb-3">
           <label for="body" class="form-label">Body</label>
-          <textarea class="form-control" name="body" id="body" rows="3"></textarea>
+          <input id="body" type="hidden" name="body" value="{{ old('body') }}">
+          <trix-editor input="body" class="@error('body') is-invalid @enderror"></trix-editor>
+          @error('body')
+            <div class="invalid-feedback">
+              {{ $message }}
+            </div>
+          @enderror
         </div>
         <div class="row">
           <div class="col"><button type="submit" class="btn btn-success w-100">Save</button></div>
@@ -36,4 +66,19 @@
       </div>
     </div>
   </form>
+
+  <script>
+    const title = document.querySelector('#title');
+    const slug = document.querySelector('#slug');
+
+    title.addEventListener('change', function() {
+      fetch('/dashboard/posts/checkSlug?title=' + title.value)
+        .then(response => response.json())
+        .then(data => slug.value = data.slug);
+    })
+
+    document.addEventListener('trix-file-accept', function(e) {
+      e.preventDefault();
+    })
+  </script>
 @endsection
