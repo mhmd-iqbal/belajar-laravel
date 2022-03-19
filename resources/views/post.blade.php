@@ -8,8 +8,13 @@
           href="/posts?category{{ $post->category->slug }}"
           class="text-decoration-none">{{ $post->category->name }}</a></p>
       <div class="text-center">
-        <img src="https://source.unsplash.com/1000x400?{{ $post->category->name }}" alt="{{ $post->category->name }}"
-          class="img-fluid" />
+        @if ($post->image)
+          <img src="{{ asset('storage/' . $post->image) }}" style="object-fit: cover; max-height: 400px;"
+            class="card-img-top" alt="{{ $post->category->name }}">
+        @else
+          <img src="https://source.unsplash.com/1200x400?{{ $post->category->name }}" class="card-img-top"
+            alt="{{ $post->category->name }}">
+        @endif
       </div>
       <article class="my-4">
         {!! $post->body !!}

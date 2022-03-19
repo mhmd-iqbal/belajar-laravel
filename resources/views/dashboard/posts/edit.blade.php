@@ -8,7 +8,7 @@
   </style>
 
   <h3 class="text-center">{{ $title }}</h3>
-  <form action="/dashboard/posts/{{ $post->slug }}" method="post">
+  <form action="/dashboard/posts/{{ $post->slug }}" method="post" enctype="multipart/form-data">
     @method('put')
     @csrf
     <div class="row justify-content-center mt-3 pb-4">
@@ -52,6 +52,22 @@
           @enderror
         </div>
         <div class="mb-3">
+          <label for="image" class="form-label">Post Image</label>
+          <input type="hidden" name="oldImage" value="{{ $post->image }}">
+          @if ($post->image)
+            <img src="{{ asset('storage/' . $post->image) }}" class="img-preview img-fluid mb-3 col-sm-4 d-block">
+          @else
+            <img class="img-preview img-fluid mb-3 col-sm-4">
+          @endif
+          <input class="form-control @error('image') is-invalid @enderror" type="file" id="image" name="image"
+            onchange="previewImage()">
+          @error('image')
+            <div class="invalid-feedback">
+              {{ $message }}
+            </div>
+          @enderror
+        </div>
+        <div class="mb-3">
           <label for="body" class="form-label">Body</label>
           <input id="body" type="hidden" name="body" value="{{ old('body', $post->body) }}">
           <trix-editor input="body" class="@error('body') is-invalid @enderror"></trix-editor>
@@ -82,5 +98,18 @@
     document.addEventListener('trix-file-accept', function(e) {
       e.preventDefault();
     })
+
+    function previewImage() {
+      const image = document.querySelector('#image');
+      const imgPreview = document.querySelector('.img-preview');
+
+      imgPreview.style.display = 'block';
+
+      const oFReader = new FileReader();
+      oFReader.readAsDataURL(image.files[0]);
+      oFReader.onload = function(e) {
+        imgPreview.src = e.target.result;
+      }
+    }
   </script>
 @endsection
